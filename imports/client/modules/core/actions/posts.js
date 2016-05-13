@@ -9,7 +9,7 @@ function createPostOptimistic(error) {
         error
     };
 }
-export function createPost(dispatch, title, content, mutation) {
+export function createPost(title, content, mutation) {
     return function (dispatch) {
         if (!title || !content) {
             dispatch(createPostOptimistic('Title & Content are required!'));

@@ -29,7 +29,7 @@ const mapMutationsToProps = () => {
 const mapDispatchToProps = (dispatch: any, ownProps: any) => {
   return {
     create: (title: string, content: string, mutation: any) => {
-        dispatch(createPost(dispatch, title, content, mutation));
+        dispatch(createPost(title, content, mutation));
     }
   };
 };

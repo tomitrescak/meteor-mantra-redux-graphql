@@ -1,15 +1,35 @@
 import NewPost from "../components/newpost";
-import { useDeps, composeWithTracker, composeAll } from "mantra-core";
-export const composer = ({ context, clearErrors }, onData) => {
-    const { LocalState } = context();
-    const error = LocalState.get('SAVING_ERROR');
-    onData(null, { error });
-    // clearErrors when unmounting the component
-    return clearErrors;
+import { connect } from 'react-apollo';
+import { createPost } from "../actions/posts";
+const generateMutationObject = (title, content) => {
+    return {
+        mutation: gql `
+    mutation addPost($title: String, $content: String) {
+       addPost(title: $title, content: $content) {
+         title
+       }
+    }`,
+        variables: {
+            title,
+            content
+        }
+    };
 };
-export const depsMapper = (context, actions) => ({
-    create: actions.posts.create,
-    clearErrors: actions.posts.clearErrors,
-    context: () => context
-});
-export default composeAll(composeWithTracker(composer), useDeps(depsMapper))(NewPost);
+const mapMutationsToProps = () => {
+    return {
+        addPost: generateMutationObject
+    };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        create: (title, content, mutation) => {
+            dispatch(createPost(dispatch, title, content, mutation));
+        }
+    };
+};
+const mapStateToProps = (state) => {
+    return {
+        error: state.post.error,
+    };
+};
+export default connect({ mapMutationsToProps, mapDispatchToProps, mapStateToProps })(NewPost);

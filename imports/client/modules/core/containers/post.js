@@ -1,20 +1,26 @@
-import Post from "../components/post";
-import { useDeps, composeWithTracker, composeAll } from "mantra-core";
-export const composer = ({ context, postId }, onData) => {
-    const { Meteor, Collections } = context();
-    if (Meteor.subscribe('posts.single', postId).ready()) {
-        const post = Collections.Posts.findOne(postId);
-        onData(null, { post });
-    }
-    else {
-        const post = Collections.Posts.findOne(postId);
-        if (post) {
-            onData(null, { post });
+import Post from '../components/post';
+import { useDeps, compose, composeAll } from 'mantra-core';
+import apolloContainer from './apollo';
+import { connect } from 'react-apollo';
+function mapQueriesToProps({ ownProps, state }) {
+    return {
+        data: {
+            query: gql `
+        query post($postId: String) {
+          post(id: $postId) {
+            _id
+            title
+            content
+          }
         }
-        else {
-            onData();
+        `,
+            variables: {
+                postId: ownProps.postId
+            },
+            forceFetch: true
         }
-    }
-    return null;
-};
-export default composeAll(composeWithTracker(composer), useDeps())(Post);
+    };
+}
+;
+export default composeAll(compose(apolloContainer()), connect({ mapQueriesToProps }), useDeps() // -> not needed here
+)(Post);

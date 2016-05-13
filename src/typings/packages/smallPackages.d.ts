@@ -52,6 +52,7 @@ declare module "meteor/udondan:jszip" {
 
 declare module WebApp {
   export var connectHandlers: any;
+  export var rawConnectHandlers: any;
 }
 
 declare function Beautify(text: string): string;

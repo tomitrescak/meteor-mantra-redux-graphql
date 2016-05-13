@@ -8,10 +8,10 @@ export interface IPosts {
 }
 
 export interface IComments {
-  _id: string;
+  _id?: string;
   postId: string;
-  createdAt: Date;
-  author: string;
+  createdAt: number;
+  author?: string;
   text: string;
   saving?: boolean;
 }

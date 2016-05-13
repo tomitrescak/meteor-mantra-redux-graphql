@@ -1,11 +1,22 @@
 import PostList from "../components/postlist";
-import { useDeps, composeWithTracker, composeAll } from "mantra-core";
-export const composer = ({ context }, onData) => {
-    const { Meteor, Collections } = context();
-    if (Meteor.subscribe("posts.list").ready()) {
-        const posts = Collections.Posts.find().fetch();
-        onData(null, { posts });
-    }
-    return null;
-};
-export default composeAll(composeWithTracker(composer), useDeps())(PostList);
+import { compose, composeAll } from "mantra-core";
+import apolloContainer from './apollo';
+import { connect } from 'react-apollo';
+function mapQueriesToProps() {
+    return {
+        data: {
+            query: gql `
+          {
+            posts {
+             _id,
+             title,
+             content
+           }
+          }
+        `,
+            forceFetch: true
+        }
+    };
+}
+;
+export default composeAll(compose(apolloContainer()), connect({ mapQueriesToProps }))(PostList);

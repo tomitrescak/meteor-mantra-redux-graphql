@@ -17,9 +17,9 @@ class NewPost extends React.Component {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
-        const { create } = this.props;
+        const { create, mutations } = this.props;
         const { titleRef, contentRef } = this.refs;
-        create(titleRef['value'], contentRef['value']);
+        create(titleRef['value'], contentRef['value'], mutations.addPost);
     }
 }
 export default NewPost;

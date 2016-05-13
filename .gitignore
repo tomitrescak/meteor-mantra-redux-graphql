@@ -1,3 +1,6 @@
 node_modules
 *.log
 .idea
+mantra-sample-blog-app-hot.csproj
+mantra-sample-blog-app-hot.csproj.user
+mantra-sample-blog-app-hot.sln

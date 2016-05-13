@@ -5,8 +5,9 @@ export interface IComponentProps {
 }
 
 export interface IComponentActions {
-  create?: (title: string, content: string) => void;
+  create?: (title: string, content: string, mutation: any) => void;
   clearErrors?: Function;
+  mutations: any;
 }
 
 interface IComponent extends IComponentProps, IComponentActions { }
@@ -33,10 +34,10 @@ class NewPost extends React.Component<IComponent, {}> {
       event.preventDefault();
     }
 
-    const {create} = this.props;
+    const {create, mutations} = this.props;
     const {titleRef, contentRef} = this.refs;
 
-    create(titleRef["value"], contentRef["value"]);
+    create(titleRef['value'], contentRef['value'], mutations.addPost);
   }
 }
 

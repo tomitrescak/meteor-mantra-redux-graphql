@@ -1,20 +1,28 @@
-export default {
-    create({ Meteor, LocalState, FlowRouter }, title, content) {
+export function clearErrors() {
+    return {
+        type: 'CLEAR_ERRORS'
+    };
+}
+function createPostOptimistic(error) {
+    return {
+        type: 'ADD_ERROR',
+        error
+    };
+}
+export function createPost(dispatch, title, content, mutation) {
+    return function (dispatch) {
         if (!title || !content) {
-            return LocalState.set('SAVING_ERROR', 'Title & Content are required!');
+            dispatch(createPostOptimistic('Title & Content are required!'));
+            return;
         }
-        LocalState.set('SAVING_ERROR', null);
-        const id = Meteor.uuid();
-        // There is a method stub for this in the config/method_stubs
-        // That's how we are doing latency compensation
-        Meteor.call('posts.create', id, title, content, (err) => {
-            if (err) {
-                return LocalState.set('SAVING_ERROR', err.message);
+        mutation(title, content).then((result) => {
+            if (result.errors && result.errors.length) {
+                return dispatch(createPostOptimistic(result.errors[0].message));
             }
+            // if (action.refetch) {
+            //   action.refetch();
+            // }
         });
-        FlowRouter.go(`/post/${id}`);
-    },
-    clearErrors({ LocalState }) {
-        return LocalState.set('SAVING_ERROR', null);
-    }
-};
+    };
+    // const id = Meteor.uuid(); => No support yet
+}

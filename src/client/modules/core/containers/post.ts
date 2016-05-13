@@ -1,29 +1,35 @@
-import Post, { IComponentProps } from "../components/post";
-import {useDeps, composeWithTracker, composeAll, IKomposer, IKomposerData} from "mantra-core";
+import Post, { IComponentProps } from '../components/post';
+import {useDeps, compose, composeAll} from 'mantra-core';
+import apolloContainer from './apollo';
+import { connect } from 'react-apollo';
 
 interface IProps {
   postId: string;
   context?: () => IContext;
 }
-export const composer: IKomposer = ({context, postId}: IProps, onData: IKomposerData<IComponentProps>) => {
-  const {Meteor, Collections} = context();
 
-  if (Meteor.subscribe('posts.single', postId).ready()) {
-    const post = Collections.Posts.findOne(postId);
-    onData(null, {post});
-  } else {
-    const post = Collections.Posts.findOne(postId);
-    if (post) {
-      onData(null, {post});
-    } else {
-      onData();
+function mapQueriesToProps({ ownProps, state }: any) {
+  return {
+    data: {
+      query: gql`
+        query post($postId: String) {
+          post(id: $postId) {
+            _id
+            title
+            content
+          }
+        }
+        `,
+      variables: {
+        postId: ownProps.postId
+      },
+      forceFetch: true
     }
-  }
-
-  return null;
+  };
 };
 
 export default composeAll<IProps>(
-  composeWithTracker(composer),
-  useDeps()
+  compose(apolloContainer()),
+  connect({ mapQueriesToProps }),
+  useDeps() // -> not needed here
 )(Post);

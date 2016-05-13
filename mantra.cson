@@ -1,0 +1,3 @@
+'language': 'ts',
+'root': 'src',
+'libFolderName': 'common'

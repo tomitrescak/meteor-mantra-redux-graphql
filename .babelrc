@@ -1,0 +1,6 @@
+{
+  // Note, currently this breaks Mantra's testing outside of Meteor, see
+  // https://github.com/mantrajs/mantra-sample-blog-app/issues/82.
+  "presets": [ "meteor" ],
+  "plugins": [ "react-hot-loader/babel" ]
+}

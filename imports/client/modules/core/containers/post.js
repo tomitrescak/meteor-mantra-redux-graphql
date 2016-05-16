@@ -1,8 +1,8 @@
 import Post from '../components/post';
 import { useDeps, compose, composeAll } from 'mantra-core';
-import apolloContainer from './apollo';
+import apolloContainer, { createMutation } from './apollo';
 import { connect } from 'react-apollo';
-function mapQueriesToProps({ ownProps, state }) {
+const mapQueriesToProps = ({ ownProps }) => {
     return {
         data: {
             query: gql `
@@ -20,7 +20,22 @@ function mapQueriesToProps({ ownProps, state }) {
             forceFetch: true
         }
     };
-}
-;
-export default composeAll(compose(apolloContainer()), connect({ mapQueriesToProps }), useDeps() // -> not needed here
+};
+const mapMutationsToProps = (p) => ({
+    removePost: (id) => {
+        return createMutation(`
+      mutation removePost($id: String) {
+         removePost(id: $id)
+      }`, { id });
+    }
+});
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    remove: (mutation) => {
+        dispatch(ownProps.removePost(ownProps.postId, mutation));
+    },
+});
+const depsToPropsMapper = (context, actions) => ({
+    removePost: actions.posts.remove
+});
+export default composeAll(compose(apolloContainer()), connect({ mapQueriesToProps, mapMutationsToProps, mapDispatchToProps }), useDeps(depsToPropsMapper) // -> not needed here
 )(Post);

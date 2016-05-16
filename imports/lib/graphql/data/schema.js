@@ -23,6 +23,7 @@ const schema = [ `
 
   type Mutation {
     addPost(title: String, content: String): String,
+    removePost(id: String): Boolean,
     addComment(postId: String, comment: String): [Comment]
   }
 

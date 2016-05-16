@@ -1,14 +1,15 @@
 import Post, { IComponentProps } from '../components/post';
 import {useDeps, compose, composeAll} from 'mantra-core';
-import apolloContainer from './apollo';
+import apolloContainer, { createMutation } from './apollo';
 import { connect } from 'react-apollo';
 
 interface IProps {
   postId: string;
   context?: () => IContext;
+  removePost?: (id: string, mutation: IMutation) => void;
 }
 
-function mapQueriesToProps({ ownProps, state }: any) {
+const mapQueriesToProps = ({ ownProps }: any) => {
   return {
     data: {
       query: gql`
@@ -28,8 +29,27 @@ function mapQueriesToProps({ ownProps, state }: any) {
   };
 };
 
+const mapMutationsToProps = (p: any) => ({
+  removePost: (id: string) => {
+    return createMutation(`
+      mutation removePost($id: String) {
+         removePost(id: $id)
+      }`, { id });
+  }
+});
+
+const mapDispatchToProps = (dispatch: IDispatch, ownProps: IProps) => ({
+  remove: (mutation: any) => {
+    dispatch(ownProps.removePost(ownProps.postId, mutation));
+  },
+});
+
+const depsToPropsMapper = (context: IContext, actions: IActions) => ({
+  removePost: actions.posts.remove
+});
+
 export default composeAll<IProps>(
   compose(apolloContainer()),
-  connect({ mapQueriesToProps }),
-  useDeps() // -> not needed here
+  connect({ mapQueriesToProps, mapMutationsToProps, mapDispatchToProps }),
+  useDeps(depsToPropsMapper) // -> not needed here
 )(Post);

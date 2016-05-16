@@ -30,6 +30,25 @@ declare global {
     };
   }
 
+  export interface IActions {
+    posts: {
+      create(title: string, text: string): void;
+      remove(id: string): void;
+    }
+  }
+
+  export interface IMutation {
+    (...params: any[]): Promise<any>
+  }
+
+  export interface IMutations {
+    removePost(id: string): void;
+  }
+
+  export interface IDispatch {
+    (action: any): void;
+  }
+
   export interface IContext {
     Meteor?: typeof Meteor | any;
     FlowRouter?: typeof FlowRouter | any;

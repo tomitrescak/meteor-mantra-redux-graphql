@@ -1,6 +1,6 @@
 import PostList from '../components/postlist';
 import { compose, composeAll, useDeps } from 'mantra-core';
-import apolloContainer from './apollo';
+import apolloContainer, { createMutation } from './apollo';
 import { connect } from 'react-apollo';
 
 interface IProps {
@@ -23,6 +23,8 @@ function mapQueriesToProps() {
     }
   };
 };
+
+
 
 export default composeAll<{}>(
   compose(apolloContainer()),

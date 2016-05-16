@@ -19,6 +19,10 @@ const resolvers = {
       const postId = Posts.insert({ title, content });
       return postId;
     },
+    async removePost(root, { id }) {
+      Posts.remove(id);
+      return true;
+    },
     async addComment(root: any, { postId, comment }) {
       const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime() });
       return Posts.findOne(id);

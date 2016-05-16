@@ -1,36 +1,55 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-export function clearErrors() {
-  return {
-    type: 'CLEAR_ERRORS'
-  };
-}
-
-function createPostOptimistic(error: string) {
+function showError(error: string) {
   return {
     type: 'ADD_ERROR',
     error
   };
 }
 
-export function create(title: string, content: string, flowRouter: typeof FlowRouter, mutation: any): any {
+export default {
+  clearErrors() {
+    return {
+      type: 'CLEAR_ERRORS'
+    };
+  },
 
-  return function(dispatch: any) {
-    if (!title || !content) {
-      dispatch(createPostOptimistic('Title & Content are required!'));
-      return;
-    }
+  create({ FlowRouter }: IContext, title: string, content: string, mutation: IMutation): any {
 
-    mutation(title, content).then((result: any) => {
-      if (result.errors && result.errors.length) {
-        return dispatch(createPostOptimistic(result.errors[0].message));
+    return function(dispatch: any) {
+      if (!title || !content) {
+        dispatch(showError('Title & Content are required!'));
+        return;
       }
-      // if (action.refetch) {
-      //   action.refetch();
-      // }
-      flowRouter.go('/');
-    });
-  };
 
-  // const id = Meteor.uuid(); => No support yet
+      mutation(title, content).then((result: any) => {
+        if (result.errors && result.errors.length) {
+          return dispatch(showError(result.errors[0].message));
+        }
+        // if (action.refetch) {
+        //   action.refetch();
+        // }
+        FlowRouter.go('/');
+      });
+    };
+
+    // const id = Meteor.uuid(); => No support yet
+  },
+
+  remove({ FlowRouter }: IContext, id: string, mutation: IMutation): any {
+
+    return (dispatch: any) => {
+      mutation(id).then((result: any) => {
+        if (result.errors && result.errors.length) {
+          return dispatch(showError(result.errors[0].message));
+        }
+        // if (action.refetch) {
+        //   action.refetch();
+        // }
+        FlowRouter.go('/');
+      });
+    };
+
+    // const id = Meteor.uuid(); => No support yet
+  }
 }

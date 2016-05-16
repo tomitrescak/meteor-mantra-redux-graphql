@@ -1,4 +1,4 @@
-import {createApp} from 'mantra-core';
+import { createApp } from './configs/mantra_redux';
 import initContext from './configs/context';
 
 // modules

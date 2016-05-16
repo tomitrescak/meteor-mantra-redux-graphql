@@ -1,5 +1,5 @@
-import PostList from "../components/postlist";
-import { compose, composeAll } from "mantra-core";
+import PostList from '../components/postlist';
+import { compose, composeAll, useDeps } from 'mantra-core';
 import apolloContainer from './apollo';
 import { connect } from 'react-apollo';
 
@@ -27,5 +27,5 @@ function mapQueriesToProps() {
 export default composeAll<{}>(
   compose(apolloContainer()),
   connect({ mapQueriesToProps })
-  // useDeps() -> not needed here
+  // useDeps() // -> not needed here
 )(PostList);

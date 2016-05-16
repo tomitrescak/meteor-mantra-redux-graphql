@@ -17,9 +17,9 @@ export default function (injectDeps, { FlowRouter }) {
     localFlowRouter = FlowRouter;
     const MainLayoutCtx = function (props) {
         const MainLayout = require('./components/main_layout').default;
-        const MainLayoutCtxIn = injectDeps(MainLayout);
+        const MainLayoutCtx = injectDeps(MainLayout);
         return (<AppContainer errorReporter={consoleErrorReporter}>
-        <MainLayoutCtxIn {...props}/>
+        <MainLayoutCtx {...props}/>
       </AppContainer>);
     };
     FlowRouter.route('/', {

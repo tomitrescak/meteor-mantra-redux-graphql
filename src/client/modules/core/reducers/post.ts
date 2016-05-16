@@ -1,8 +1,6 @@
 import { Action } from 'redux';
 
-
-
-const post = (state = {}, action: Action) => {
+export const post = (state = {}, action: any) => {
   switch (action.type) {
     case 'ADD_ERROR':
       return Object.assign({}, state, { error: action.error });
@@ -11,5 +9,3 @@ const post = (state = {}, action: Action) => {
   }
   return state;
 };
-
-export default post;

@@ -1,3 +1,5 @@
+import { FlowRouter } from 'meteor/kadira:flow-router';
+
 export function clearErrors() {
   return {
     type: 'CLEAR_ERRORS'
@@ -11,7 +13,7 @@ function createPostOptimistic(error: string) {
   };
 }
 
-export function createPost(title: string, content: string, mutation: any): any {
+export function create(title: string, content: string, flowRouter: typeof FlowRouter, mutation: any): any {
 
   return function(dispatch: any) {
     if (!title || !content) {
@@ -26,8 +28,9 @@ export function createPost(title: string, content: string, mutation: any): any {
       // if (action.refetch) {
       //   action.refetch();
       // }
+      flowRouter.go('/');
     });
-  }
+  };
 
   // const id = Meteor.uuid(); => No support yet
 }

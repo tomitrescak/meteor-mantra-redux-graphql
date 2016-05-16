@@ -1,3 +1,13 @@
+export interface AddPostParams {
+  title: string;
+  content: string;
+}
+
+export interface AddCommentParams {
+  postId: string;
+  comment: string;
+}
+
 const schema = [`
   type Post {
     _id: String,
@@ -22,7 +32,7 @@ const schema = [`
   }
 
   type Mutation {
-    addPost(title: String, content: String): [Post],
+    addPost(title: String, content: String): String,
     addComment(postId: String, comment: String): [Comment]
   }
 
@@ -31,4 +41,5 @@ const schema = [`
     mutation: Mutation
   }
 `];
+
 export default schema;

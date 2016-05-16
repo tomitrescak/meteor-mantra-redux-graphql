@@ -1,7 +1,7 @@
 interface IProps {
   data: {
     loading: boolean;
-  }
+  };
 }
 
 /*

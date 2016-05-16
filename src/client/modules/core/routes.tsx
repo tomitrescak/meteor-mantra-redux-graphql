@@ -27,10 +27,10 @@ export default function (injectDeps: any, {FlowRouter}: IContext) {
 
   const MainLayoutCtx = function(props: any) {
     const MainLayout = require('./components/main_layout').default;
-    const MainLayoutCtxIn = injectDeps(MainLayout);
+    const MainLayoutCtx = injectDeps(MainLayout);
     return (
       <AppContainer errorReporter={consoleErrorReporter}>
-        <MainLayoutCtxIn {...props} />
+        <MainLayoutCtx {...props} />
       </AppContainer>
     );
   };

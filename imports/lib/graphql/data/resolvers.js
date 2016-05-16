@@ -1,10 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Posts, Comments } from '../collections';
+import { Posts, Comments } from '../../collections';
 import * as Schema from './schema';
-
-var bound = Meteor.bindEnvironment(function(callback) {
-  callback()
-});
 
 const resolvers = {
   Query: {
@@ -20,10 +16,10 @@ const resolvers = {
   },
   Mutation: {
     async addPost(root, { title, content }) {
-      const post = Posts.insert({ title, content });
-      return [post];
+      const postId = Posts.insert({ title, content });
+      return postId;
     },
-    async addComment(root: any, { postId, comment }: Schema.AddCommentParams) {
+    async addComment(root: any, { postId, comment }) {
       const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime() });
       return Posts.findOne(id);
     }

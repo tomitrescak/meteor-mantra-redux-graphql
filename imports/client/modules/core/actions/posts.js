@@ -9,7 +9,7 @@ function createPostOptimistic(error) {
         error
     };
 }
-export function createPost(title, content, mutation) {
+export function create(title, content, flowRouter, mutation) {
     return function (dispatch) {
         if (!title || !content) {
             dispatch(createPostOptimistic('Title & Content are required!'));
@@ -22,6 +22,7 @@ export function createPost(title, content, mutation) {
             // if (action.refetch) {
             //   action.refetch();
             // }
+            flowRouter.go('/');
         });
     };
     // const id = Meteor.uuid(); => No support yet

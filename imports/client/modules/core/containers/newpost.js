@@ -1,13 +1,12 @@
 import NewPost from "../components/newpost";
+import { useDeps, composeAll } from "mantra-core";
 import { connect } from 'react-apollo';
-import { createPost } from "../actions/posts";
+import { create } from "../actions/posts";
 const generateMutationObject = (title, content) => {
     return {
         mutation: gql `
     mutation addPost($title: String, $content: String) {
-       addPost(title: $title, content: $content) {
-         title
-       }
+       addPost(title: $title, content: $content)
     }`,
         variables: {
             title,
@@ -23,13 +22,18 @@ const mapMutationsToProps = () => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         create: (title, content, mutation) => {
-            dispatch(createPost(title, content, mutation));
+            dispatch(create(title, content, ownProps.flowRouter, mutation));
         }
     };
 };
 const mapStateToProps = (state) => {
     return {
-        error: state.post.error,
+        error: state.post.error
     };
 };
-export default connect({ mapMutationsToProps, mapDispatchToProps, mapStateToProps })(NewPost);
+const depsToPropsMapper = (context, actions) => ({
+    flowRouter: context.FlowRouter
+});
+export default composeAll(connect({ mapMutationsToProps, mapDispatchToProps, mapStateToProps }), useDeps(depsToPropsMapper) // -> not needed here
+)(NewPost);
+// export default (NewPost);

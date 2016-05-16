@@ -3,15 +3,13 @@ import {useDeps, composeWithTracker, composeAll, IKomposer, IKomposerData, IDeps
 
 import { connect } from 'react-apollo';
 
-import { createPost } from "../actions/posts";
+import { create } from "../actions/posts";
 
 const generateMutationObject = (title: string, content: string) => {
   return {
     mutation: gql`
     mutation addPost($title: String, $content: String) {
-       addPost(title: $title, content: $content) {
-         title
-       }
+       addPost(title: $title, content: $content)
     }`,
     variables: {
       title,
@@ -29,15 +27,24 @@ const mapMutationsToProps = () => {
 const mapDispatchToProps = (dispatch: any, ownProps: any) => {
   return {
     create: (title: string, content: string, mutation: any) => {
-        dispatch(createPost(title, content, mutation));
+        dispatch(create(title, content, ownProps.flowRouter, mutation));
     }
   };
 };
 
 const mapStateToProps = (state: IState) => {
   return {
-    error: state.post.error,
+    error: state.post.error
   };
 };
 
-export default connect({mapMutationsToProps, mapDispatchToProps, mapStateToProps})(NewPost);
+const depsToPropsMapper = (context: IContext, actions: any) => ({
+   flowRouter: context.FlowRouter
+});
+
+export default composeAll<{}>(
+  connect({mapMutationsToProps, mapDispatchToProps, mapStateToProps}),
+  useDeps(depsToPropsMapper) // -> not needed here
+)(NewPost);
+
+// export default (NewPost);

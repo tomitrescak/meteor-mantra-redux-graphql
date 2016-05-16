@@ -1,6 +1,6 @@
 import React from 'react';
 import Navigation from './navigation';
-import ApolloProvider from "../../../configs/store";
+import ApolloProvider from './apollo_layout';
 const Layout = ({ content = () => null }) => (<ApolloProvider>
     <div>
       <header>

@@ -4,7 +4,7 @@ import { createApp as createMantraApp } from 'mantra-core';
 
 // redux
 
-import { createStore, combineReducers, applyMiddleware } from 'redux' ;
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux' ;
 import createLogger from 'redux-logger';
 import ReduxThunk from 'redux-thunk';
 
@@ -42,7 +42,7 @@ class MantraRedux {
     // prepare middlewares
 
     const middleware = [apolloClient.middleware(), ReduxThunk];
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && !window['devToolsExtension']) {
       const logger = createLogger();
       middleware.push(logger);
     }
@@ -57,7 +57,11 @@ class MantraRedux {
     this.store = createStore(
       combineReducers(reducers),
       {},
+      compose(
       applyMiddleware(...middleware)
+       ,
+        window['devToolsExtension'] ? window['devToolsExtension']() : f => f
+      )
     );
 
     this.context.Store = this.store;

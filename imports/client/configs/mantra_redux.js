@@ -1,6 +1,6 @@
 // mantra
 import { createApp as createMantraApp } from 'mantra-core';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import createLogger from 'redux-logger';
 import ReduxThunk from 'redux-thunk';
 import { apolloClient } from './apollo';
@@ -22,7 +22,7 @@ class MantraRedux {
         this.app.init();
         // prepare middlewares
         const middleware = [apolloClient.middleware(), ReduxThunk];
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development' && !window['devToolsExtension']) {
             const logger = createLogger();
             middleware.push(logger);
         }
@@ -31,7 +31,7 @@ class MantraRedux {
         for (let mantraModule of this.modules) {
             reducers = Object.assign(reducers, mantraModule.reducers);
         }
-        this.store = createStore(combineReducers(reducers), {}, applyMiddleware(...middleware));
+        this.store = createStore(combineReducers(reducers), {}, compose(applyMiddleware(...middleware), window['devToolsExtension'] ? window['devToolsExtension']() : f => f));
         this.context.Store = this.store;
         // if (module['hot']) {
         //     // Enable Webpack hot module replacement for reducers

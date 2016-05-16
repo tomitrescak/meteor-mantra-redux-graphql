@@ -23,10 +23,10 @@ const resolvers = {
       Posts.remove(id);
       return true;
     },
-    async addComment(root: any, { postId, comment }) {
+    async addComment(root: any, { postId, comment }, context) {
       console.log("postId: " + postId);
       console.log("comment: " + comment);
-      const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime() });
+      const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime(), author: context.user._id });
       return Posts.findOne(id);
     }
   }

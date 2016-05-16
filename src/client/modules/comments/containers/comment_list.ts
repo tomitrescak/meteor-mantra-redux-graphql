@@ -22,7 +22,8 @@ const mapQueriesToProps = ({ ownProps }: IReduxProps): IGraphqlQuery  => {
             comments(postId: $postId) {
              _id,
              createdAt,
-             text
+             text,
+             author
            }
           }
         `,

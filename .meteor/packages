@@ -22,3 +22,6 @@ reactive-dict
 audit-argument-checks
 check
 random
+std:accounts-ui
+std:accounts-basic
+accounts-password

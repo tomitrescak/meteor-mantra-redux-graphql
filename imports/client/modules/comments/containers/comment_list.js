@@ -10,7 +10,8 @@ const mapQueriesToProps = ({ ownProps }) => {
             comments(postId: $postId) {
              _id,
              createdAt,
-             text
+             text,
+             author
            }
           }
         `,

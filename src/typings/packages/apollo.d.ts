@@ -4,6 +4,7 @@ declare module "apollo-client" {
   export var SelectionSet: any;
   export var GraphQLError: any;
   export var ApolloClient: any;
+  export var createNetworkInterface: any;
   export default ApolloClient;
 }
 

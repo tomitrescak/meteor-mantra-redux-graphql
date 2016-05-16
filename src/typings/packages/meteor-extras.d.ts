@@ -13,3 +13,12 @@ declare module "meteor/meteor" {
     export function uuid(): string;
   }
 }
+
+
+declare module "meteor/accounts-base" {
+  export module Accounts {
+    export function _storedLoginToken(): string;
+  }
+}
+
+declare var Headers: any;

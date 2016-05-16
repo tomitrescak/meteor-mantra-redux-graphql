@@ -1,18 +1,20 @@
 
 // function implementation
 
-function showError(error: string) {
+export function showError(error: string) {
   return {
     type: 'ADD_ERROR',
     error
   };
 }
 
-function clearErrors() {
+export function clearErrors() {
   return {
     type: 'CLEAR_ERRORS'
   };
 }
+
+
 
 // function dispatcher
 
@@ -22,5 +24,12 @@ export default {
   },
   clearErrors({ Store }: IContext) {
     Store.dispatch(clearErrors);
+  },
+  checkResult(dispatch: IDispatch) {
+    return (result: any) => {
+      if (result.errors && result.errors.length) {
+        return dispatch(showError(result.errors[0].message));
+      }
+    };
   }
 }

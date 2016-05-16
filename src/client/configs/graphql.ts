@@ -7,6 +7,7 @@ declare global {
 
   export interface IMutations {
     removePostMutation(id: string): void;
+    createComment(postId: string, comment: string): void;
   }
 
   export interface IGraphqlQuery {

@@ -1,43 +1,19 @@
 import { useDeps, composeAll } from 'mantra-core';
 import Component from '../components/create_comment';
+import { connect } from 'react-apollo';
 const mapMutationsToProps = ({ ownProps }) => {
     return {
-        addPost: (comment) => {
+        createComment: (postId, comment) => {
             return {
                 mutation: gql `
         mutation addComment($postId: String, $comment: String) {
            addComment(postId: $postId, comment: $comment)
         }`,
                 variables: {
-                    postId: ownProps.postId,
+                    postId: postId,
                     comment
                 }
             };
-        }
-    };
-};
-const mapQueriesToProps = ({ ownProps }) => {
-    return {
-        data: {
-            query: gql `
-          query comments($postId: String) {
-            comments(postId: $postId) {
-             createdAt,
-             text
-           }
-          }
-        `,
-            forceFetch: true,
-            variables: {
-                postId: ownProps.postId
-            }
-        }
-    };
-};
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        create: (title, content, mutation) => {
-            dispatch(ownProps.create(title, content, mutation));
         }
     };
 };
@@ -48,7 +24,7 @@ const mapStateToProps = (state) => {
 };
 export const mapDepsToProps = (context, actions) => ({
     create: actions.comments.create,
-    clearErrors: actions.comments.clearErrors,
+    clearErrors: actions.general.clearErrors,
     context: () => context
 });
-export default composeAll(useDeps(mapDepsToProps))(Component);
+export default composeAll(connect({ mapMutationsToProps, mapStateToProps }), useDeps(mapDepsToProps))(Component);

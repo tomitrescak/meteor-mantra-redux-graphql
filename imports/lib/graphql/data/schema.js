@@ -9,7 +9,7 @@ const schema = [ `
   type Comment {
     _id: String,
     postId: String,
-    createdAt: Int,
+    createdAt: Float,
     author: String,
     text: String,
     saving: Boolean
@@ -24,7 +24,7 @@ const schema = [ `
   type Mutation {
     addPost(title: String, content: String): String,
     removePost(id: String): Boolean,
-    addComment(postId: String, comment: String): [Comment]
+    addComment(postId: String, comment: String): Boolean
   }
 
   schema {

@@ -8,6 +8,7 @@ const mapQueriesToProps = ({ ownProps }) => {
             query: gql `
           query comments($postId: String) {
             comments(postId: $postId) {
+             _id,
              createdAt,
              text
            }

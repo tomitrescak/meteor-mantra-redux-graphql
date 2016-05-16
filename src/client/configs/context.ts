@@ -21,11 +21,14 @@ declare global {
     posts: {
       create(title: string, text: string): void;
       remove(id: string): void;
-    },
+    };
     general: {
       showError(error: string): void;
       clearErrors(): void;
-    }
+    };
+    comments: {
+      create(postId: string, comment: string): void;
+    };
   }
 
   export interface IContext {

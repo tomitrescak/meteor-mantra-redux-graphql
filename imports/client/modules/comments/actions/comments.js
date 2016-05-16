@@ -1,20 +1,22 @@
+import actions from '../../core/actions/general';
+export function create({ Store }, postId, text, mutation, refetch) {
+    if (!text) {
+        return actions.showError({ Store }, 'Comment text is required.!');
+    }
+    if (!postId) {
+        return actions.showError({ Store }, 'postId is required');
+    }
+    actions.clearErrors({ Store });
+    // const id = Meteor.uuid(); -> not yet
+    // debugger;
+    return mutation(postId, text).then(actions.checkResult(Store.dispatch)).then(() => {
+        if (refetch) {
+            return refetch();
+        }
+    });
+}
 export default {
-    create({ Meteor, LocalState }, postId, text) {
-        if (!text) {
-            return LocalState.set('CREATE_COMMENT_ERROR', 'Comment text is required.');
-        }
-        if (!postId) {
-            return LocalState.set('CREATE_COMMENT_ERROR', 'postId is required.');
-        }
-        LocalState.set('CREATE_COMMENT_ERROR', null);
-        const id = Meteor.uuid();
-        Meteor.call('posts.createComment', id, postId, text, (err) => {
-            if (err) {
-                return LocalState.set('CREATE_COMMENT_ERROR', err.message);
-            }
-        });
-    },
-    clearErrors({ LocalState }) {
-        return LocalState.set('CREATE_COMMENT_ERROR', null);
+    create({ Store }, postId, comment, mutation, refetch) {
+        Store.dispatch(() => create({ Store }, postId, comment, mutation, refetch));
     }
 };

@@ -3,6 +3,8 @@ import * as React from 'react';
 export interface IComponentProps {
   error?: string;
   postId?: string;
+  mutations: IMutations;
+  refetch: Function;
 }
 
 export interface IComponentActions {
@@ -13,12 +15,14 @@ export interface IComponentActions {
 export interface IComponent extends IComponentProps, IComponentActions {}
 
 class CreateComment extends React.Component<IComponent, {}> {
+  comment: HTMLTextAreaElement;
+
   render() {
-    const {error} = this.props;
+    const { error } = this.props;
     return (
       <div>
         {error ? this._renderError(error) : null}
-        <textarea ref='text' placeholder='Enter your comment here.'>
+        <textarea ref={ (node) => this.comment = node } placeholder="Enter your comment here.">
 
         </textarea>
         <br />
@@ -28,16 +32,15 @@ class CreateComment extends React.Component<IComponent, {}> {
   }
 
   _create() {
-    const text = this.refs['text']['value'];
     const {create, postId}: IComponent = this.props;
-    create(postId, text);
-    this.refs['text']['value'] = '';
+    create(postId, this.comment.value, this.props.mutations.createComment, this.props.refetch );
+    this.comment.value = '';
   }
 
   _renderError(error: string) {
     return (
-      <div className='error'>
-        {error}
+      <div className="error">
+        { error }
       </div>
     );
   }

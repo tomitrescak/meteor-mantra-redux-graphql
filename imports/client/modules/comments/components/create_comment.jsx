@@ -4,7 +4,7 @@ class CreateComment extends React.Component {
         const { error } = this.props;
         return (<div>
         {error ? this._renderError(error) : null}
-        <textarea ref='text' placeholder='Enter your comment here.'>
+        <textarea ref={(node) => this.comment = node} placeholder="Enter your comment here.">
 
         </textarea>
         <br />
@@ -12,13 +12,12 @@ class CreateComment extends React.Component {
       </div>);
     }
     _create() {
-        const text = this.refs['text']['value'];
         const { create, postId } = this.props;
-        create(postId, text);
-        this.refs['text']['value'] = '';
+        create(postId, this.comment.value, this.props.mutations.createComment, this.props.refetch);
+        this.comment.value = '';
     }
     _renderError(error) {
-        return (<div className='error'>
+        return (<div className="error">
         {error}
       </div>);
     }

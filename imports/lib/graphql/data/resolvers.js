@@ -24,6 +24,8 @@ const resolvers = {
       return true;
     },
     async addComment(root: any, { postId, comment }) {
+      console.log("postId: " + postId);
+      console.log("comment: " + comment);
       const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime() });
       return Posts.findOne(id);
     }

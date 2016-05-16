@@ -1,11 +1,11 @@
 // function implementation
-function showError(error) {
+export function showError(error) {
     return {
         type: 'ADD_ERROR',
         error
     };
 }
-function clearErrors() {
+export function clearErrors() {
     return {
         type: 'CLEAR_ERRORS'
     };
@@ -16,5 +16,12 @@ export default {
     },
     clearErrors({ Store }) {
         Store.dispatch(clearErrors);
+    },
+    checkResult(dispatch) {
+        return (result) => {
+            if (result.errors && result.errors.length) {
+                return dispatch(showError(result.errors[0].message));
+            }
+        };
     }
 };

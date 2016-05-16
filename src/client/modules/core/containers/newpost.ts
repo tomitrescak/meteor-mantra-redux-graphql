@@ -22,13 +22,13 @@ const mapMutationsToProps = () => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
-  return {
-    create: (title: string, content: string, mutation: any) => {
-        dispatch(ownProps.createAction(title, content, mutation));
-    }
-  };
-};
+// const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+//   return {
+//     create: (title: string, content: string, mutation: any) => {
+//         dispatch(ownProps.createAction(title, content, mutation));
+//     }
+//   };
+// };
 
 const mapStateToProps = (state: IState) => {
   return {
@@ -36,15 +36,15 @@ const mapStateToProps = (state: IState) => {
   };
 };
 
-const depsToPropsMapper = (context: IContext, actions: IActions) => {
+const mapDepsToProps = (context: IContext, actions: IActions) => {
   return {
-     createAction: actions.posts.create
+     create: actions.posts.create
   };
 };
 
 export default composeAll<{}>(
-  connect({mapMutationsToProps, mapDispatchToProps, mapStateToProps}),
-  useDeps(depsToPropsMapper)
+  connect({mapMutationsToProps, mapStateToProps}),
+  useDeps(mapDepsToProps)
 )(NewPost);
 
 // export default (NewPost);

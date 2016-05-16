@@ -18,22 +18,22 @@ const mapMutationsToProps = () => {
         addPost: generateMutationObject
     };
 };
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        create: (title, content, mutation) => {
-            dispatch(ownProps.createAction(title, content, mutation));
-        }
-    };
-};
+// const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+//   return {
+//     create: (title: string, content: string, mutation: any) => {
+//         dispatch(ownProps.createAction(title, content, mutation));
+//     }
+//   };
+// };
 const mapStateToProps = (state) => {
     return {
         error: state.post.error
     };
 };
-const depsToPropsMapper = (context, actions) => {
+const mapDepsToProps = (context, actions) => {
     return {
-        createAction: actions.posts.create
+        create: actions.posts.create
     };
 };
-export default composeAll(connect({ mapMutationsToProps, mapDispatchToProps, mapStateToProps }), useDeps(depsToPropsMapper))(NewPost);
+export default composeAll(connect({ mapMutationsToProps, mapStateToProps }), useDeps(mapDepsToProps))(NewPost);
 // export default (NewPost);

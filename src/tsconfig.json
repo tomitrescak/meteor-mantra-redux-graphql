@@ -42,6 +42,7 @@
   },
   "files": [
     "client/configs/context.ts",
+    "client/configs/graphql.ts",
     "client/configs/mantra_redux.ts",
     "client/main.ts",
     "client/modules/comments/actions/comments.ts",
@@ -54,6 +55,7 @@
     "client/modules/comments/containers/tests/comment_list.ts",
     "client/modules/comments/containers/tests/create_comment.ts",
     "client/modules/comments/index.ts",
+    "client/modules/core/actions/general.ts",
     "client/modules/core/actions/index.ts",
     "client/modules/core/actions/posts.ts",
     "client/modules/core/actions/tests/posts.ts",

@@ -72,6 +72,21 @@ class MantraRedux {
   }
 }
 
+declare global {
+  export interface IState {
+    dispatch: (...params: any[]) => Promise<any>;
+    error?: string;
+    post?: {
+      error: string
+    };
+    apollo?: {
+      data: any;
+      mutations: any;
+      queries: any;
+    };
+  }
+}
+
 export let mantraRedux = new MantraRedux(); // this instance is used for accessing the store
 
 export const createApp = (context: IContext) => {

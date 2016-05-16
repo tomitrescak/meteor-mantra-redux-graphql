@@ -1,14 +1,54 @@
-import { useDeps, composeWithTracker, composeAll } from 'mantra-core';
+import { useDeps, composeAll } from 'mantra-core';
 import Component from '../components/create_comment';
-export const composer = ({ context, clearErrors }, onData) => {
-    const { LocalState } = context();
-    const error = LocalState.get('CREATE_COMMENT_ERROR');
-    onData(null, { error });
-    return clearErrors;
+const mapMutationsToProps = ({ ownProps }) => {
+    return {
+        addPost: (comment) => {
+            return {
+                mutation: gql `
+        mutation addComment($postId: String, $comment: String) {
+           addComment(postId: $postId, comment: $comment)
+        }`,
+                variables: {
+                    postId: ownProps.postId,
+                    comment
+                }
+            };
+        }
+    };
 };
-export const depsMapper = (context, actions) => ({
+const mapQueriesToProps = ({ ownProps }) => {
+    return {
+        data: {
+            query: gql `
+          query comments($postId: String) {
+            comments(postId: $postId) {
+             createdAt,
+             text
+           }
+          }
+        `,
+            forceFetch: true,
+            variables: {
+                postId: ownProps.postId
+            }
+        }
+    };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        create: (title, content, mutation) => {
+            dispatch(ownProps.create(title, content, mutation));
+        }
+    };
+};
+const mapStateToProps = (state) => {
+    return {
+        error: state.post.error
+    };
+};
+export const mapDepsToProps = (context, actions) => ({
     create: actions.comments.create,
     clearErrors: actions.comments.clearErrors,
     context: () => context
 });
-export default composeAll(composeWithTracker(composer), useDeps(depsMapper))(Component);
+export default composeAll(useDeps(mapDepsToProps))(Component);

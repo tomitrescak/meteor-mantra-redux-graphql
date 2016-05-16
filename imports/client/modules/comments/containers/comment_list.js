@@ -1,17 +1,23 @@
-import { useDeps, composeWithTracker, composeAll } from 'mantra-core';
+import { compose, composeAll } from 'mantra-core';
 import Component from '../components/comment_list';
-export const composer = ({ context, clearErrors, postId }, onData) => {
-    const { Meteor, Collections } = context();
-    if (Meteor.subscribe('posts.comments', postId).ready()) {
-        const options = {
-            sort: { createdAt: -1 }
-        };
-        const comments = Collections.Comments.find({ postId }, options).fetch();
-        onData(null, { comments });
-    }
-    else {
-        onData();
-    }
-    return clearErrors;
+import apolloContainer from '../../core/containers/apollo';
+import { connect } from 'react-apollo';
+const mapQueriesToProps = ({ ownProps }) => {
+    return {
+        data: {
+            query: gql `
+          query comments($postId: String) {
+            comments(postId: $postId) {
+             createdAt,
+             text
+           }
+          }
+        `,
+            forceFetch: true,
+            variables: {
+                postId: ownProps.postId
+            }
+        }
+    };
 };
-export default composeAll(composeWithTracker(composer), useDeps())(Component);
+export default composeAll(compose(apolloContainer()), connect({ mapQueriesToProps }))(Component);

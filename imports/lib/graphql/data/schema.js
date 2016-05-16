@@ -18,7 +18,7 @@ const schema = [ `
   type Query {
     posts: [Post],
     post(id: String): Post
-    comments: [Comment]
+    comments(postId: String): [Comment]
   }
 
   type Mutation {

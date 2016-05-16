@@ -1,45 +1,32 @@
-function showError(error) {
-    return {
-        type: 'ADD_ERROR',
-        error
-    };
+import generalActions from './general';
+export function create({ FlowRouter, Store }, title, content, mutation) {
+    if (!title || !content) {
+        generalActions.showError({ Store }, 'Title & Content are required!');
+        return;
+    }
+    mutation(title, content).then((result) => {
+        if (result.errors && result.errors.length) {
+            return generalActions.showError({ Store }, result.errors[0].message);
+        }
+        FlowRouter.go('/');
+    });
+}
+export function remove({ FlowRouter, Store }, id, mutation) {
+    mutation(id).then((result) => {
+        if (result.errors && result.errors.length) {
+            return generalActions.showError({ Store }, result.errors[0].message);
+        }
+        // if (action.refetch) {
+        //   action.refetch();
+        // }
+        FlowRouter.go('/');
+    });
 }
 export default {
-    clearErrors() {
-        return {
-            type: 'CLEAR_ERRORS'
-        };
+    create(context, title, content, mutation) {
+        context.Store.dispatch(() => create(context, title, content, mutation));
     },
-    create({ FlowRouter }, title, content, mutation) {
-        return function (dispatch) {
-            if (!title || !content) {
-                dispatch(showError('Title & Content are required!'));
-                return;
-            }
-            mutation(title, content).then((result) => {
-                if (result.errors && result.errors.length) {
-                    return dispatch(showError(result.errors[0].message));
-                }
-                // if (action.refetch) {
-                //   action.refetch();
-                // }
-                FlowRouter.go('/');
-            });
-        };
-        // const id = Meteor.uuid(); => No support yet
-    },
-    remove({ FlowRouter }, id, mutation) {
-        return (dispatch) => {
-            mutation(id).then((result) => {
-                if (result.errors && result.errors.length) {
-                    return dispatch(showError(result.errors[0].message));
-                }
-                // if (action.refetch) {
-                //   action.refetch();
-                // }
-                FlowRouter.go('/');
-            });
-        };
-        // const id = Meteor.uuid(); => No support yet
+    remove(context, id, mutation) {
+        context.Store.dispatch(() => remove(context, id, mutation));
     }
 };

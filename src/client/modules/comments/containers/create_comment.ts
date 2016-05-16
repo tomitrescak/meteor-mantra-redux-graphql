@@ -9,21 +9,63 @@ interface IProps {
   postId?: string;
 }
 
-export const composer: IKomposer = ({context, clearErrors}: IProps, onData: IKomposerData<IComponentProps>) => {
-  const {LocalState} = context();
-  const error = LocalState.get('CREATE_COMMENT_ERROR');
-  onData(null, {error});
 
-  return clearErrors;
+const mapMutationsToProps = ({ ownProps }: IReduxProps) => {
+  return {
+    addPost: (comment: string) => {
+      return {
+        mutation: gql`
+        mutation addComment($postId: String, $comment: String) {
+           addComment(postId: $postId, comment: $comment)
+        }`,
+        variables: {
+          postId: ownProps.postId,
+          comment
+        }
+      };
+    }
+  };
 };
 
-export const depsMapper = (context: IContext, actions: { comments: IComponentActions }) => ({
+const mapQueriesToProps = ({ ownProps }: IReduxProps): IGraphqlQuery  => {
+  return {
+    data: {
+      query: gql`
+          query comments($postId: String) {
+            comments(postId: $postId) {
+             createdAt,
+             text
+           }
+          }
+        `,
+      forceFetch: true,
+      variables: {
+        postId: ownProps.postId
+      }
+    }
+  };
+};
+
+const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+  return {
+    create: (title: string, content: string, mutation: any) => {
+        dispatch(ownProps.create(title, content, mutation));
+    }
+  };
+};
+
+const mapStateToProps = (state: IState) => {
+  return {
+    error: state.post.error
+  };
+};
+
+export const mapDepsToProps = (context: IContext, actions: { comments: IComponentActions }) => ({
   create: actions.comments.create,
   clearErrors: actions.comments.clearErrors,
   context: () => context
 });
 
 export default composeAll<IProps>(
-  composeWithTracker(composer),
-  useDeps(depsMapper)
+  useDeps(mapDepsToProps)
 )(Component);

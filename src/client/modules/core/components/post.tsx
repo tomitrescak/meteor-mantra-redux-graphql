@@ -18,12 +18,10 @@ const Post = ({post, removePost, mutations}: IComponentProps) => (
     </p>
     <div>
       <h4>Comments</h4>
-
+      <CommentList postId={post._id}/>
     </div>
     <div><button onClick={() => removePost(mutations.removePostMutation)}>Delete</button></div>
   </div>
 );
 
 export default Post;
-
-// <CommentList postId={post._id}/>

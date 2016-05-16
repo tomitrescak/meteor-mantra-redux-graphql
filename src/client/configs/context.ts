@@ -42,7 +42,7 @@ declare global {
   }
 
   export interface IMutations {
-    removePost(id: string): void;
+    removePostMutation(id: string): void;
   }
 
   export interface IDispatch {

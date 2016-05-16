@@ -5,11 +5,11 @@ import { IPosts } from '../../../../lib/collections';
 
 export interface IComponentProps {
   post?: IPosts;
-  remove: (mutation: any) => null;
+  removePost: (mutation: any) => null;
   mutations: IMutations;
 }
 
-const Post = ({post, remove, mutations}: IComponentProps) => (
+const Post = ({post, removePost, mutations}: IComponentProps) => (
   <div>
     {post.saving ? <p>Saving...</p> : null}
     <h2>{post.title}</h2>
@@ -20,7 +20,7 @@ const Post = ({post, remove, mutations}: IComponentProps) => (
       <h4>Comments</h4>
 
     </div>
-    <div><button onClick={() => remove(mutations.removePost)}>Delete</button></div>
+    <div><button onClick={() => removePost(mutations.removePostMutation)}>Delete</button></div>
   </div>
 );
 

@@ -30,7 +30,7 @@ const mapQueriesToProps = ({ ownProps }: any) => {
 };
 
 const mapMutationsToProps = (p: any) => ({
-  removePost: (id: string) => {
+  removePostMutation: (id: string) => {
     return createMutation(`
       mutation removePost($id: String) {
          removePost(id: $id)
@@ -39,7 +39,7 @@ const mapMutationsToProps = (p: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: IDispatch, ownProps: IProps) => ({
-  remove: (mutation: any) => {
+  removePost: (mutation: any) => {
     dispatch(ownProps.removePost(ownProps.postId, mutation));
   },
 });

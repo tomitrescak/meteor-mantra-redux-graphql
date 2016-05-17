@@ -1,5 +1,5 @@
-import NewPost from "../components/newpost";
-import { useDeps, composeAll } from "mantra-core";
+import NewPost from '../components/newpost';
+import { useDeps, composeAll } from 'mantra-core';
 import { connect } from 'react-apollo';
 const generateMutationObject = (title, content) => {
     return {

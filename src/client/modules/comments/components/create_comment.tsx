@@ -3,8 +3,8 @@ import * as React from 'react';
 export interface IComponentProps {
   error?: string;
   postId?: string;
-  mutations: IMutations;
-  refetch: Function;
+  mutations?: IMutations;
+  refetch?: Function;
 }
 
 export interface IComponentActions {

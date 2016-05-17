@@ -5,8 +5,8 @@ import { IPosts } from '../../../../lib/collections';
 
 export interface IComponentProps {
   post?: IPosts;
-  removePost: (mutation: any) => null;
-  mutations: IMutations;
+  removePost?: (mutation: any) => null;
+  mutations?: IMutations;
 }
 
 const Post = ({post, removePost, mutations}: IComponentProps) => (

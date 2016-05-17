@@ -6,7 +6,7 @@ export const createMutation = (query, variables) => {
 };
 export default (dataName = null) => {
     return (props, onData) => {
-        if (props.data.loading) {
+        if (!props.data || props.data.loading) {
             onData();
         }
         else {

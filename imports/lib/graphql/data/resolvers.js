@@ -1,35 +1,33 @@
-import { Meteor } from 'meteor/meteor';
 import { Posts, Comments } from '../../collections';
-import * as Schema from './schema';
+import { addAsyncResolvers } from 'meteor-ratools/server';
 
-const resolvers = {
-  Query: {
-    async posts(root, args) {
-      return Posts.find({}).fetch();
-    },
-    async post(root, { id }) {
-      return Posts.findOne(id);
-    },
-    async comments(root, { postId }) {
-      return Comments.find({ postId }).fetch();
-    },
+const queries = {
+  async posts() {
+    return Posts.find({}).fetch();
   },
-  Mutation: {
-    async addPost(root, { title, content }) {
-      const postId = Posts.insert({ title, content });
-      return postId;
-    },
-    async removePost(root, { id }) {
-      Posts.remove(id);
-      return true;
-    },
-    async addComment(root: any, { postId, comment }, context) {
-      console.log("postId: " + postId);
-      console.log("comment: " + comment);
-      const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime(), author: context.user._id });
-      return Posts.findOne(id);
-    }
+  async post(root: any, { id }: any) {
+    return Posts.findOne(id);
+  },
+  async comments(root: any, { postId }: any) {
+    return Comments.find({ postId }).fetch();
   }
 };
 
-export default resolvers;
+addAsyncResolvers("Query", queries);
+
+const mutations = {
+  async addPost(root: any, { title, content }: any) {
+    const postId = Posts.insert({ title, content });
+    return postId;
+  },
+  async removePost(root: any, { id }: any) {
+    Posts.remove(id);
+    return true;
+  },
+  async addComment(root: any, { postId, comment }: any, context: any) {
+    const id = Comments.insert({ postId: postId, text: comment, createdAt: new Date().getTime(), author: context.user._id });
+    return Posts.findOne(id);
+  }
+};
+
+addAsyncResolvers("Mutation", mutations);

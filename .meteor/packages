@@ -25,3 +25,4 @@ random
 std:accounts-ui
 std:accounts-basic
 accounts-password
+tomi:apollo-redux-tools

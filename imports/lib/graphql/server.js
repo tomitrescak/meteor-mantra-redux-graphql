@@ -4,7 +4,8 @@ import {
 import express from 'express';
 import proxyMiddleware from 'http-proxy-middleware';
 import schema from './data/schema';
-import resolvers from './data/resolvers';
+import './data/resolvers';
+import { resolvers } from './graphql_helpers';
 
 import { check } from 'meteor/check';
 
@@ -28,7 +29,7 @@ graphQLServer.use('/graphql', apolloServer(async(req) => {
     graphiql: true,
     pretty: true,
     schema,
-    resolvers,
+    resolvers: resolvers(),
     context: {
       // The current user will now be available on context.user in all resolvers
       user,

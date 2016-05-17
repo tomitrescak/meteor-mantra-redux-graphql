@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from './navigation';
 
-import ApolloProvider from './apollo_layout';
+import { ApolloProvider } from 'meteor/tomi:apollo-redux-tools';
 import { Accounts } from 'meteor/std:accounts-ui';
 
 const styles = {

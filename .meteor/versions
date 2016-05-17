@@ -86,6 +86,7 @@ std:accounts-ui@1.2.1
 templating@1.1.9
 templating-tools@1.0.4
 tmeasday:check-npm-versions@0.3.1
+tomi:apollo-redux-tools@0.0.1
 tracker@1.0.13
 ui@1.0.11
 underscore@1.0.8

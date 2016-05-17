@@ -18,7 +18,7 @@ export const createMutation = (query: string, variables: any) => {
 
 export default (dataName: string = null) => {
   return (props: IProps, onData: any): any => {
-    if (props.data.loading) {
+    if (!props.data || props.data.loading) {
       onData();
     } else {
       onData(null, dataName ? props.data[dataName] : props.data);

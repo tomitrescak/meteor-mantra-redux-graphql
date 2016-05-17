@@ -1,25 +1,15 @@
-export interface AddPostParams {
-  title: string;
-  content: string;
-}
-
-export interface AddCommentParams {
-  postId: string;
-  comment: string;
-}
-
 const schema = [`
   type Post {
     _id: String,
     title: String,
-    saving: Boolean,
+    saving: Boolean, 
     content: String
   }
 
   type Comment {
     _id: String,
     postId: String,
-    createdAt: Int,
+    createdAt: Float,
     author: String,
     text: String,
     saving: Boolean
@@ -28,12 +18,13 @@ const schema = [`
   type Query {
     posts: [Post],
     post(id: String): Post
-    comments: [Comment]
+    comments(postId: String): [Comment]
   }
 
   type Mutation {
     addPost(title: String, content: String): String,
-    addComment(postId: String, comment: String): [Comment]
+    removePost(id: String): Boolean,
+    addComment(postId: String, comment: String): Boolean
   }
 
   schema {
@@ -41,5 +32,4 @@ const schema = [`
     mutation: Mutation
   }
 `];
-
 export default schema;

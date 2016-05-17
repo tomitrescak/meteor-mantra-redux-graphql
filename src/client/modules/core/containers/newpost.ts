@@ -1,5 +1,5 @@
-import NewPost, { IComponentProps, IComponentActions} from "../components/newpost";
-import {useDeps, composeWithTracker, composeAll, IKomposer, IKomposerData, IDepsMapper} from "mantra-core";
+import NewPost, { IComponentProps, IComponentActions} from '../components/newpost';
+import {useDeps, composeAll} from 'mantra-core';
 
 import { connect } from 'react-apollo';
 

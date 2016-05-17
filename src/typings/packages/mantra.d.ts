@@ -1,5 +1,3 @@
-/// <reference path="../react/react.d.ts"/>
-
 import React = __React;
 
 declare module "react-mounter" {

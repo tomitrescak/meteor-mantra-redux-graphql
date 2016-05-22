@@ -17,6 +17,14 @@ This is a sample blog app written in [Mantra](https://github.com/kadirahq/mantra
 Simply start your app with `meteor -p 5005`. 
 Then you can access the app on <http://localhost:5005>
 
+### Typescript vs Javascript
+
+This repo contains all sources written in Typscript located in the `src` directory.
+The compiled javascript is in ES 2015 located in the `imports` directory.
+If you do not wish to use Typescript, simply remove the `src` directory.
+
+I know we are going here against Mantra recommendation to keep everything in client / server directory, what you are welcome to change, but for now, keeping everything in imports seems cleaner to me.
+
 ### Running Tests
 
 In this app, every part of the client side is fully tested using the familiar tools like Mocha, Chai and Sinon.

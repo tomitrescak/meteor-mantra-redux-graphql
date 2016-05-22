@@ -1,8 +1,6 @@
 # mantra-sample-blog-app-hot
 
-This is the `mantra-sample-blog-app` with hotloading added in.  You can clone
-and run this directly (don't forget to `git checkout hot`), or
-[look at the changes](https://github.com/gadicc/mantra-sample-blog-app-hot/compare/master...gadicc:hot) necessary to make to the original.
+This is the `mantra-sample-blog-app` with hotloading added in + using the Redux store for the local state and GraphQL for queries.
 
 ## A Sample Blog App Written in Mantra
 
